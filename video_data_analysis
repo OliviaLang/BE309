@@ -1,0 +1,35 @@
+
+
+% INPUT
+csv_filename = 'L2700Hz1Vpp.csv';
+
+% Video Specific Info
+leg = csv_filename(2);
+freq = csv_filename(3:(find(csv_filename=='H')-1));
+amp = csv_filename((find(csv_filename=='z')+1):(find(csv_filename=='V')-1));
+
+% READ IN DATA
+csv_filepath = ['/Users/olang/Documents/MATLAB/BE309/CMI/CSVs/', csv_filename];
+data = readtable(csv_filepath);
+knee = table2array(data(1,:));
+ankle = table2array(data(2:end,:));
+
+% ANALYSIS
+start = ankle(1,:); % Initial Location
+
+% GET MAXIMUM EXTENSION
+[~, indmaxext] = max(ankle(:,1));
+max_ext = ankle(indmaxext, :);
+
+% GET RELAXATION AFTER EXTENSION
+[~, indextrelax] = min(ankle(indmaxext:end,1));
+ext_relax = ankle(indextrelax, :);
+
+% GET MAXIMUM CONTRACTION
+[~, indmaxcont] = min(ankle(:,1));
+max_cont = ankle(indmaxcont, :);
+
+% GET RELAXATION AFTER CONTRACTION
+[~, indcontrelax] = max(ankle(indmaxcont:end,1));
+cont_relax = ankle(indcontrelax, :);
+
